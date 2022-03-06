@@ -86,3 +86,22 @@ services:
       - BEASTHOST=readsb
       - MLAT=yes
       - FR24KEY=${FR24_KEY}
+      
+  piaware:
+    image: ghcr.io/sdr-enthusiasts/docker-piaware:latest
+    tty: true
+    networks:
+      - adsbnet
+    container_name: piaware
+    restart: always
+    environment:
+      - TZ=${FEEDER_TZ}
+      - LAT=${FEEDER_LAT}
+      - LONG=${FEEDER_LON}
+      - RECEIVER_TYPE=relay
+      - BEASTHOST=readsb
+      - BEASTPORT=30005
+      - FEEDER_ID=${PIAWARE_KEY}
+    tmpfs:
+      - /run:exec,size=64M
+      - /var/log
