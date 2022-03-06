@@ -1,0 +1,73 @@
+version: '2.0'
+
+networks:
+  adsbnet:
+
+volumes:
+  readsbpb_rrd:
+  readsbpb_autogain:
+
+services:
+  readsb:
+    image: ghcr.io/sdr-enthusiasts/docker-readsb-protobuf:latest
+    tty: true
+    container_name: readsb
+    hostname: readsb
+    restart: always
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    ports:
+      - 8080:8080
+      - 30005:30005
+      - 30003:30003
+      - 30002:30002
+    networks:
+      - adsbnet
+    environment:
+      - TZ={FEEDER_TZ}
+      - READSB_DCFILTER=true
+      - READSB_DEVICE_TYPE=rtlsdr
+      - READSB_FIX=true
+      - READSB_GAIN=autogain
+      - READSB_LAT={FEEDER_LAT}
+      - READSB_LON={FEEDER_LON}
+      - READSB_MODEAC=true
+      - READSB_RX_LOCATION_ACCURACY=2
+      - READSB_STATS_RANGE=true
+      - READSB_NET_ENABLE=true
+    volumes:
+      - readsbpb_rrd:/run/collectd
+      - readsbpb_autogain:/run/autogain
+  
+  adsbhub:
+    image: ghcr.io/sdr-enthusiasts/docker-adsbhub:latest
+    tty: true
+    networks:
+      - adsbnet
+    container_name: adsbhub
+    restart: always
+    environment:
+      - TZ={FEEDER_TZ}
+      - SBSHOST=readsb
+      - CLIENTKEY=${ADSBHUB_STATION_KEY}
+  
+  adsbx:
+    image: ghcr.io/sdr-enthusiasts/docker-adsbexchange:latest
+    tty: true
+    networks:
+      - adsbnet
+    container_name: adsbx
+    restart: always
+    depends_on:
+      - readsb
+    environment:
+      - BEASTHOST=readsb
+      - LAT=${FEEDER_LAT}
+      - LONG=${FEEDER_LON}
+      - ALT=${FEEDER_ALT_M}m
+      - SITENAME=${ADSBX_SITENAME}
+      - UUID=${ADSBX_UUID}
+      - TZ=${FEEDER_TZ}
+    tmpfs:
+      - /run:exec,size=64M,uid=1000,gid=1000
+      - /var/log
