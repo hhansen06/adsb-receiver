@@ -24,13 +24,13 @@ services:
     networks:
       - adsbnet
     environment:
-      - TZ={FEEDER_TZ}
+      - TZ=${FEEDER_TZ}
       - READSB_DCFILTER=true
       - READSB_DEVICE_TYPE=rtlsdr
       - READSB_FIX=true
       - READSB_GAIN=autogain
-      - READSB_LAT={FEEDER_LAT}
-      - READSB_LON={FEEDER_LON}
+      - READSB_LAT=${FEEDER_LAT}
+      - READSB_LON=${FEEDER_LON}
       - READSB_MODEAC=true
       - READSB_RX_LOCATION_ACCURACY=2
       - READSB_STATS_RANGE=true
@@ -47,7 +47,7 @@ services:
     container_name: adsbhub
     restart: always
     environment:
-      - TZ={FEEDER_TZ}
+      - TZ=${FEEDER_TZ}
       - SBSHOST=readsb
       - CLIENTKEY=${ADSBHUB_STATION_KEY}
   
@@ -71,3 +71,18 @@ services:
     tmpfs:
       - /run:exec,size=64M,uid=1000,gid=1000
       - /var/log
+      
+  fr24feed:
+    image: ghcr.io/sdr-enthusiasts/docker-flightradar24:latest
+    tty: true
+    networks:
+      - adsbnet
+    container_name: fr24feed
+    restart: always
+    ports:
+      - 8754:8754
+    environment:
+      - TZ=${FEEDER_TZ}
+      - BEASTHOST=readsb
+      - MLAT=yes
+      - FR24KEY=${FR24_KEY}
