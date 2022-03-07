@@ -15,7 +15,7 @@ services:
     hostname: readsb
     restart: always
     devices:
-      - /dev/bus/usb:/dev/bus/usb
+      - /dev/bus/usb
     ports:
       - 8080:8080
       - 30005:30005
@@ -35,6 +35,7 @@ services:
       - READSB_RX_LOCATION_ACCURACY=2
       - READSB_STATS_RANGE=true
       - READSB_NET_ENABLE=true
+      - READSB_RTLSDR_DEVICE=${FEEDER_SERIAL}
     volumes:
       - readsbpb_rrd:/run/collectd
       - readsbpb_autogain:/run/autogain

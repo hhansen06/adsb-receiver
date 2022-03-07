@@ -7,3 +7,5 @@ ADSBX_UUID=
 ADSBX_SITEMAME=h2com
 FR24_KEY=
 PIAWARE_KEY=
+# See Logs for Serial Nr. of DVB-T Receiver. In Most cases it's 0000001
+FEEDER_SERIAL=0000001
