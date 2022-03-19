@@ -9,3 +9,4 @@ FR24_KEY=
 PIAWARE_KEY=
 # See Logs for Serial Nr. of DVB-T Receiver. In Most cases it's 0000001
 FEEDER_SERIAL=0000001
+FREEDAR_USERNAME=My_Funny_Nickname

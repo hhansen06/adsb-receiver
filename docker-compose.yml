@@ -72,6 +72,7 @@ services:
     tmpfs:
       - /run:exec,size=64M,uid=1000,gid=1000
       - /var/log
+ 
       
   fr24feed:
     image: ghcr.io/sdr-enthusiasts/docker-flightradar24:latest
@@ -103,6 +104,29 @@ services:
       - BEASTHOST=readsb
       - BEASTPORT=30005
       - FEEDER_ID=${PIAWARE_KEY}
+    tmpfs:
+      - /run:exec,size=64M
+      - /var/log
+      
+
+  mlatclient-freedar:
+    image: henrikhansen/mlat-client:latest
+    tty: true
+    networks:
+      - adsbnet
+    container_name: mlatclient-freedar
+    restart: always
+    environment:
+      - ALT=${FEEDER_ALT_M}
+      - LAT=${FEEDER_LAT}
+      - LON=${FEEDER_LON}
+      - USER=${FREEDAR_USERNAME}
+      - INPUT_TYPE=beast
+      - INPUT_CONNECT_HOST=readsb
+      - INPUT_CONNECT_PORT=30005
+      - SERVER_HOST=mlat.freedar.uk
+      - SERVER_PORT=41112        
+      - RESULTS=basestation,listen,41113
     tmpfs:
       - /run:exec,size=64M
       - /var/log
