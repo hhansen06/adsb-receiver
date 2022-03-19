@@ -110,7 +110,7 @@ services:
       
 
   mlatclient-freedar:
-    image: henrikhansen/mlat-client:latest
+    image: flighttracker/mlat-client:latest
     tty: true
     networks:
       - adsbnet
