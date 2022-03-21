@@ -144,8 +144,8 @@ services:
       - INPUT_TYPE=beast
       - INPUT_CONNECT_HOST=readsb
       - INPUT_CONNECT_PORT=30005
-      - SERVER_HOST=api.h2com.eu
-      - SERVER_PORT=50000
+      - SERVER_HOST=159.69.148.44
+      - SERVER_PORT=5000
       - RESULTS=basestation,listen,41113
     tmpfs:
       - /run:exec,size=64M
