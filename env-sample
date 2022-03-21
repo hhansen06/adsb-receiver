@@ -4,7 +4,7 @@ FEEDER_LON=8.12346
 FEEDER_TZ="Europe/Berlin"
 FEEDER_ALT_M=50
 ADSBX_UUID=
-ADSBX_SITEMAME=h2com
+ADSBX_SITENAME=h2com
 FR24_KEY=
 PIAWARE_KEY=
 # See Logs for Serial Nr. of DVB-T Receiver. In Most cases it's 0000001

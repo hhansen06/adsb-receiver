@@ -107,10 +107,8 @@ services:
     tmpfs:
       - /run:exec,size=64M
       - /var/log
-      
-
   mlatclient-freedar:
-    image: flighttracker/mlat-client:latest
+    image: ghcr.io/flighttrackr/mlat-client:latest
     tty: true
     networks:
       - adsbnet
@@ -126,6 +124,28 @@ services:
       - INPUT_CONNECT_PORT=30005
       - SERVER_HOST=mlat.freedar.uk
       - SERVER_PORT=41112        
+      - RESULTS=basestation,listen,41113
+    tmpfs:
+      - /run:exec,size=64M
+      - /var/log
+  
+  mlatclient-h2com:
+    image: ghcr.io/flighttrackr/mlat-client:latest
+    tty: true
+    networks:
+      - adsbnet
+    container_name: mlatclient-h2com
+    restart: always
+    environment:
+      - ALT=${FEEDER_ALT_M}
+      - LAT=${FEEDER_LAT}
+      - LON=${FEEDER_LON}
+      - USER=${FREEDAR_USERNAME}
+      - INPUT_TYPE=beast
+      - INPUT_CONNECT_HOST=readsb
+      - INPUT_CONNECT_PORT=30005
+      - SERVER_HOST=api.h2com.eu
+      - SERVER_PORT=50000
       - RESULTS=basestation,listen,41113
     tmpfs:
       - /run:exec,size=64M
